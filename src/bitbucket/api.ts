@@ -75,7 +75,14 @@ export async function* makePaginatedRequest<T>(
 
 function getAuthHeaderValue(auth: AuthConfig): string {
   // HTTP Basic Auth using username and password
-  return `Basic ${Buffer.from(`${auth.username}:${auth.password}`).toString("base64")}`;
+  if (auth.username && auth.password) {
+    return `Basic ${Buffer.from(`${auth.username}:${auth.password}`).toString("base64")}`;
+  }
+  // If no username/password, use token authentication
+  if (auth.token) {
+    return `Bearer ${auth.token}`;
+  }
+  throw new Error("No authentication credentials provided");
 }
 
 async function parseResponse<T>(response: Response) {

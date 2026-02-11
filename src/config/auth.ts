@@ -1,13 +1,15 @@
-import { getRequiredValue } from "./utils";
+import { getOptionalValue } from "./utils";
 
 export type AuthConfig = Readonly<{
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
+  token?: string;
 }>;
 
 export function getAuthConfig(): AuthConfig {
   return {
-    username: getRequiredValue("BITBUCKET_USERNAME"),
-    password: getRequiredValue("BITBUCKET_APP_PASSWORD"),
+    username: getOptionalValue("BITBUCKET_USERNAME", undefined),
+    password: getOptionalValue("BITBUCKET_APP_PASSWORD", undefined),
+    token: getOptionalValue("BITBUCKET_TOKEN", undefined),
   };
 }
