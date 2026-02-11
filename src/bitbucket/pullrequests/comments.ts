@@ -29,7 +29,7 @@ type BitbucketPRComment = {
 export async function getExistingComment(auth: AuthConfig, pr: PRConfig, identifierText: string) {
   for await (const comment of makePaginatedRequest<BitbucketPRComment>(
     auth,
-    `/repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments`,
+    `repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments`,
   )) {
     if (!comment.deleted && comment.content?.raw?.includes(identifierText)) {
       return comment.id;
@@ -38,7 +38,7 @@ export async function getExistingComment(auth: AuthConfig, pr: PRConfig, identif
 }
 
 export async function createComment(auth: AuthConfig, pr: PRConfig, content: string) {
-  await makeRequest<unknown>(auth, `/repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments`, {
+  await makeRequest<unknown>(auth, `repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments`, {
     method: "POST",
     body: JSON.stringify({ content: { raw: content } }),
   });
@@ -47,7 +47,7 @@ export async function createComment(auth: AuthConfig, pr: PRConfig, content: str
 export async function updateComment(auth: AuthConfig, pr: PRConfig, id: number, content: string) {
   await makeRequest<unknown>(
     auth,
-    `/repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments/${id}`,
+    `repositories/${pr.workspace}/${pr.repository}/pullrequests/${pr.id}/comments/${id}`,
     {
       method: "PUT",
       body: JSON.stringify({ content: { raw: content } }),
